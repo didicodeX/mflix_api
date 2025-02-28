@@ -1,0 +1,28 @@
+{
+  "name": "mflix_api",
+  "version": "1.0.0",
+  "description": "api pour interagir avec la base de donnee sample_mflix",
+  "homepage": "https://github.com/RusselTano/mflix_api#readme",
+  "bugs": {
+    "url": "https://github.com/RusselTano/mflix_api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RusselTano/mflix_api.git"
+  },
+  "license": "ISC",
+  "author": "didicode",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon main.js",
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.11.0",
+    "nodemon": "^3.1.9"
+  }
+}
