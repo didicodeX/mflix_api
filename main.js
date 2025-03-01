@@ -5,7 +5,7 @@ import "dotenv/config";
 import app from "./app.js";
 
 // Connecter a la base de donnees
-import "./config/database.config.js";
+import "./src/config/database.config.js";
 
 // Lancer le serveur
 const PORT = process.env.PORT;
