@@ -5,9 +5,10 @@ const router = Router();
 // ✅ Route 1 : Récupérer tous les films (limités à 10)
 router.get("/", async (req, res) => {
   try {
+    let limit = parseInt(req.query.limit) || 10;
     const movies = await Movie.find()
       .select("title plot genres poster ")
-      .limit(10);
+      .limit(limit);
     res.json(movies);
   } catch (err) {
     res.status(500).json({ error: "Erreur serveur" });
@@ -15,9 +16,11 @@ router.get("/", async (req, res) => {
 });
 
 // ✅ Route 2 : Récupérer un film par ID
-router.get("/movies/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const movie = await Movie.findById(req.params.id);
+    console.log(req.params.id);
+
     if (!movie) return res.status(404).json({ error: "Film non trouvé" });
     res.json(movie);
   } catch (err) {
@@ -26,7 +29,7 @@ router.get("/movies/:id", async (req, res) => {
 });
 
 // ✅ Route 3 : Ajouter un film
-router.post("/movies", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const newMovie = new Movie(req.body);
     await newMovie.save();
@@ -37,10 +40,15 @@ router.post("/movies", async (req, res) => {
 });
 
 // ✅ Route 4 : Modifier un film
-router.put("/movies/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    const updatedMovie = await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedMovie) return res.status(404).json({ error: "Film non trouvé" });
+    const updatedMovie = await Movie.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!updatedMovie)
+      return res.status(404).json({ error: "Film non trouvé" });
     res.json(updatedMovie);
   } catch (err) {
     res.status(500).json({ error: "Erreur serveur" });
@@ -48,10 +56,11 @@ router.put("/movies/:id", async (req, res) => {
 });
 
 // ✅ Route 5 : Supprimer un film
-router.delete("/movies/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const deletedMovie = await Movie.findByIdAndDelete(req.params.id);
-    if (!deletedMovie) return res.status(404).json({ error: "Film non trouvé" });
+    if (!deletedMovie)
+      return res.status(404).json({ error: "Film non trouvé" });
     res.json({ message: "Film supprimé !" });
   } catch (err) {
     res.status(500).json({ error: "Erreur serveur" });

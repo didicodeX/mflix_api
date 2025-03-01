@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const CommentSchema = mongoose.Schema({
-  name: { type: string },
-  email: { type: string },
-  text: { type: string }, 
+  name: { type: String },
+  email: { type: String },
+  text: { type: String }, 
   date: { type: Date },
   movie_id: {
     type: mongoose.Schema.Types.ObjectId,
