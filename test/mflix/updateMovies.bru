@@ -1,0 +1,21 @@
+meta {
+  name: updateMovies
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{url_dev}}/movies/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 573a1390f29313caabcd63d6
+}
+
+body:json {
+  {
+      "runtime":80
+  }
+}
