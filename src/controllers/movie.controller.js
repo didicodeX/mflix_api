@@ -1,12 +1,16 @@
-import Movie from "../models/movie.model.js";
+import {
+  getAllMoviesService,
+  getMovieByIdService,
+  createMovieService,
+  updateMovieService,
+  deleteMovieService,
+} from "../services/movie.service.js";
 
-// ✅ Récupérer tous les films (limités à 10 par défaut)
+// ✅ Récupérer tous les films
 export const getAllMovies = async (req, res) => {
   try {
-    let limit = parseInt(req.query.limit) || 10;
-    const movies = await Movie.find()
-      .select("title plot genres poster")
-      .limit(limit);
+    const limit = parseInt(req.query.limit) || 10;
+    const movies = await getAllMoviesService(limit);
     res.status(200).json(movies);
   } catch (err) {
     console.error("Erreur dans getAllMovies:", err);
@@ -17,7 +21,7 @@ export const getAllMovies = async (req, res) => {
 // ✅ Récupérer un film par ID
 export const getMovie = async (req, res) => {
   try {
-    const movie = await Movie.findById(req.params.id);
+    const movie = await getMovieByIdService(req.params.id);
     if (!movie) return res.status(404).json({ error: "Film non trouvé" });
     res.json(movie);
   } catch (err) {
@@ -29,8 +33,7 @@ export const getMovie = async (req, res) => {
 // ✅ Ajouter un film
 export const createMovie = async (req, res) => {
   try {
-    const newMovie = new Movie(req.body);
-    await newMovie.save();
+    const newMovie = await createMovieService(req.body);
     res.status(201).json(newMovie);
   } catch (err) {
     console.error("Erreur dans createMovie:", err);
@@ -41,9 +44,7 @@ export const createMovie = async (req, res) => {
 // ✅ Modifier un film
 export const updateMovie = async (req, res) => {
   try {
-    const updatedMovie = await Movie.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const updatedMovie = await updateMovieService(req.params.id, req.body);
     if (!updatedMovie) return res.status(404).json({ error: "Film non trouvé" });
     res.json(updatedMovie);
   } catch (err) {
@@ -55,7 +56,7 @@ export const updateMovie = async (req, res) => {
 // ✅ Supprimer un film
 export const deleteMovie = async (req, res) => {
   try {
-    const deletedMovie = await Movie.findByIdAndDelete(req.params.id);
+    const deletedMovie = await deleteMovieService(req.params.id);
     if (!deletedMovie) return res.status(404).json({ error: "Film non trouvé" });
     res.json({ message: "Film supprimé !" });
   } catch (err) {
