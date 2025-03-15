@@ -1,5 +1,13 @@
 import { Router } from "express";
 import Movie from "../models/movie.model.js";
+import {
+  getAllMovies,
+  getMovie,
+  createMovie,
+  updateMovie,
+  deleteMovie,
+} from "../controllers/movie.controller.js";
+
 const router = Router();
 
 // ✅ Route 1 : Récupérer tous les films (limités à 10)
@@ -9,7 +17,7 @@ router.get("/", async (req, res) => {
     const movies = await Movie.find()
       .select("title plot genres poster ")
       .limit(limit);
-    res.json(movies);
+    res.status(200).json(movies);
   } catch (err) {
     res.status(500).json({ error: "Erreur serveur" });
   }
@@ -67,4 +75,9 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.get("/", getAllMovies);
+router.get("/:id", getMovie);
+router.post("/", createMovie);
+router.put("/:id", updateMovie);
+router.delete("/:id", deleteMovie);
 export default router;
